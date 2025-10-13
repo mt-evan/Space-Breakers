@@ -8,8 +8,8 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 10f;
 
     // The boundaries the player cannot pass
-    public float leftBoundary = -7.5f;
-    public float rightBoundary = 7.5f;
+    public float leftBoundary = -16.5f;
+    public float rightBoundary = 16.5f;
 
     private Rigidbody2D rb;
     private float moveInput;
