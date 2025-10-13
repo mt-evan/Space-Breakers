@@ -12,7 +12,7 @@ public class BallController : MonoBehaviour
     public float ballYOffset = 0.5f;
 
     // The Y position where the ball is considered lost
-    public float lossBoundary = -15f;
+    public float lossBoundary = -20f;
 
     private Rigidbody2D rb;
 

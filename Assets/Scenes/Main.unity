@@ -287,7 +287,7 @@ MonoBehaviour:
   ballSpeed: 7
   playerTransform: {fileID: 546907197}
   ballYOffset: 0.5
-  lossBoundary: -15
+  lossBoundary: -20
 --- !u!1 &230013415
 GameObject:
   m_ObjectHideFlags: 0
