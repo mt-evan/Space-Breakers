@@ -284,7 +284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 705e9b57017e8b142b20f23ee7f5e91b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launchSpeed: 5
+  ballSpeed: 7
 --- !u!1 &230013415
 GameObject:
   m_ObjectHideFlags: 0
@@ -634,6 +634,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
+  leftBoundary: -7.5
+  rightBoundary: 7.5
 --- !u!61 &546907199
 BoxCollider2D:
   m_ObjectHideFlags: 0
