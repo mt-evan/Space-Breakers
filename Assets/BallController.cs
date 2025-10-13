@@ -1,11 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
     // The speed the ball gets launched at
     public float ballSpeed = 7f;
+
+    // A reference to the player's Transform component
+    public Transform playerTransform;
+
+    // How high above the player the ball should sit
+    public float ballYOffset = 0.5f;
+
+    // The Y position where the ball is considered lost
+    public float lossBoundary = -15f;
 
     private Rigidbody2D rb;
 
@@ -22,11 +29,27 @@ public class BallController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Check if ball is not in play, so if player presses jump, it can launch
-        if (!inPlay && Input.GetButtonDown("Jump"))
+        if (!inPlay)
         {
-            inPlay = true;
-            rb.velocity = Vector2.up * ballSpeed;
+            // If the ball is NOT in play, make it follow the player
+            transform.position = new Vector3(playerTransform.position.x, playerTransform.position.y + ballYOffset, 0);
+
+            // Check if the player wants to launch the ball
+            if (Input.GetButtonDown("Jump"))
+            {
+                inPlay = true;
+                rb.velocity = Vector2.up * ballSpeed;
+            }
+        }
+        else
+        {
+            // If the ball IS in play, check if it has fallen off the screen
+            if (transform.position.y < lossBoundary)
+            {
+                // If it has, reset it
+                inPlay = false;
+                rb.velocity = Vector2.zero; // Stop all movement
+            }
         }
     }
 
@@ -36,24 +59,13 @@ public class BallController : MonoBehaviour
         // Check if the object that ball collided with is the Player
         if (collision.gameObject.CompareTag("Player"))
         {
-            // Get position of the player
             Vector2 playerPosition = collision.transform.position;
-            // Get position of the ball
             Vector2 ballPosition = transform.position;
-
-            // Get width of the player's ship
             float playerWidth = collision.collider.bounds.size.x;
-
-            // Calculate where the ball hits the player ship
-            // Result is a value from -0.5 for far left and 0.5 for far right
             float contactPoint = (ballPosition.x - playerPosition.x) / playerWidth;
-
-            // Make a new direction vector
-            // x is based on contactPoint, y is always up as 1
             Vector2 newDirction = new Vector2(contactPoint, 1).normalized;
-
-            // Set the ball's new velocity
             rb.velocity = newDirction * ballSpeed;
         }
     }
 }
+
