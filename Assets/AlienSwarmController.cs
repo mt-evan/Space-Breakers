@@ -12,12 +12,16 @@ public class AlienSwarmController : MonoBehaviour
     public float leftLimit = -16.5f;
     public float rightLimit = 16.5f;
 
+    // Alien's width for accurate boundary checks
+    private float alienWidth;
+
     private bool movingRight = true;
     private List<Transform> alienTransforms = new List<Transform>();
 
     // Start is called before the first frame update
     void Start()
     {
+        alienWidth = alienPrefab.GetComponent<BoxCollider2D>().bounds.size.x;
         SpawnAliens();
     }
 
@@ -56,29 +60,61 @@ public class AlienSwarmController : MonoBehaviour
         Vector3 direction = movingRight ? Vector3.right : Vector3.left;
         transform.position += direction * moveSpeed * Time.deltaTime;
 
-        // Check if the aliens need to change direciton
-        bool changeDirection = false;
-        foreach (Transform alien in alienTransforms)
+        // Find the current leftmost and rightmost aliens of the swarm
+        float currentLeftmost = float.MaxValue;
+        float currentRightmost = float.MinValue;
+
+        // Loop backwards to safely remove destroyed aliens from the list
+        for (int i = alienTransforms.Count - 1; i >= 0; i--)
         {
-            if (movingRight && alien.position.x >= rightLimit)
+            // If the alien has been destroyed, its reference will be null
+            if (alienTransforms[i] == null)
             {
-                changeDirection = true;
-                break;
+                // Remove the null reference from the list
+                alienTransforms.RemoveAt(i);
+                continue; // Skip to the next iteration
             }
-            else if (!movingRight && alien.position.x <= leftLimit)
+
+            // If the alien is valid, check its position for the boundary check
+            if (alienTransforms[i].position.x < currentLeftmost)
             {
-                changeDirection = true;
-                break;
+                currentLeftmost = alienTransforms[i].position.x;
             }
+            if (alienTransforms[i].position.x > currentRightmost)
+            {
+                currentRightmost = alienTransforms[i].position.x;
+            }
+        }
+
+        // If all aliens were destroyed in this frame, stop here
+        if (alienTransforms.Count == 0) return;
+
+        // Check the swarm's OUTER EDGE against the boundary
+        bool changeDirection = false;
+        if (movingRight && (currentRightmost + (alienWidth / 2)) >= rightLimit)
+        {
+            changeDirection = true;
+        }
+        else if (!movingRight && (currentLeftmost - (alienWidth / 2)) <= leftLimit)
+        {
+            changeDirection = true;
         }
 
         if (changeDirection)
         {
-            movingRight = !movingRight; // Change direction
-            // Move downwards a bit
+            movingRight = !movingRight; // Reverse direction
             Vector3 currentPosition = transform.position;
-            currentPosition.y -= stepDownAmount;
+            currentPosition.y -= stepDownAmount; // Move down
             transform.position = currentPosition;
+        }
+    }
+
+    // Public method for the BallController.cs file to call to report that an alien is destroyed
+    public void RemoveAlien(Transform alien)
+    {
+        if (alienTransforms.Contains(alien))
+        {
+            alienTransforms.Remove(alien);
         }
     }
 }

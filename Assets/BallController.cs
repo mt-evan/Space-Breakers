@@ -63,8 +63,21 @@ public class BallController : MonoBehaviour
             Vector2 ballPosition = transform.position;
             float playerWidth = collision.collider.bounds.size.x;
             float contactPoint = (ballPosition.x - playerPosition.x) / playerWidth;
-            Vector2 newDirction = new Vector2(contactPoint, 1).normalized;
-            rb.velocity = newDirction * ballSpeed;
+            Vector2 newDirection = new Vector2(contactPoint, 1).normalized;
+            rb.velocity = newDirection * ballSpeed;
+        }
+        else if (collision.gameObject.CompareTag("Alien"))
+        {
+            // Find the swarm controller on the parent of the alien
+            AlienSwarmController swarmController = collision.transform.GetComponent<AlienSwarmController>();
+            if (swarmController != null)
+            {
+                // Have the controller remote the alien from its list for consistent data
+                swarmController.RemoveAlien(collision.transform);
+            }
+
+            // Destroy alien if the ball hits it
+            Destroy(collision.gameObject);
         }
     }
 }
