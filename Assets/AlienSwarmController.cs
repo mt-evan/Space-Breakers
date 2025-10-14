@@ -5,6 +5,7 @@ using UnityEngine;
 public class AlienSwarmController : MonoBehaviour
 {
     public GameObject alienPrefab; // Prefab of the alien to spawn
+    public GameObject projectilePrefab; // Prefab of the projectile
     public int aliensPerRow = 8;
     public int numberOfRows = 4;
     public float padding = 1.5f; // Padding for space between aliens
@@ -13,10 +14,10 @@ public class AlienSwarmController : MonoBehaviour
     public float stepDownAmount = 0.5f;
     public float leftLimit = -16.5f;
     public float rightLimit = 16.5f;
+    public float fireRate = 1.0f; // How many seconds between firing
 
-    // Alien's width for accurate boundary checks
-    private float alienWidth;
-
+    
+    private float alienWidth; // Alien's width for accurate boundary checks
     private bool movingRight = true;
     private List<Transform> alienTransforms = new List<Transform>();
 
@@ -25,6 +26,7 @@ public class AlienSwarmController : MonoBehaviour
     {
         alienWidth = alienPrefab.GetComponent<BoxCollider2D>().bounds.size.x;
         SpawnAliens();
+        StartCoroutine(FireProjectiles());
     }
 
     // Update is called once per frame
@@ -124,6 +126,29 @@ public class AlienSwarmController : MonoBehaviour
         if (alienTransforms.Contains(alien))
         {
             alienTransforms.Remove(alien);
+        }
+    }
+
+    IEnumerator FireProjectiles()
+    {
+        // Loop as long as the game is running
+        while (true)
+        {
+            // Wait for the amount of time specified in fireRate
+            yield return new WaitForSeconds(fireRate);
+
+            // Clean up any null references from aliens that were destroyed
+            alienTransforms.RemoveAll(item => item == null);
+
+            if (alienTransforms.Count > 0)
+            {
+                // Select a random alien that is still alive
+                int randomIndex = Random.Range(0, alienTransforms.Count);
+                Transform firingAlien = alienTransforms[randomIndex];
+
+                // Make the projectile at the alien's position
+                Instantiate(projectilePrefab, firingAlien.position, Quaternion.identity);
+            }
         }
     }
 }
