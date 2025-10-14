@@ -3,7 +3,7 @@ using UnityEngine;
 public class BallController : MonoBehaviour
 {
     // The speed the ball gets launched at
-    public float ballSpeed = 7f;
+    public float ballSpeed = 9f;
 
     // A reference to the player's Transform component
     public Transform playerTransform;

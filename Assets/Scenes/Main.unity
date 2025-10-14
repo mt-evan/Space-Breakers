@@ -284,7 +284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 705e9b57017e8b142b20f23ee7f5e91b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballSpeed: 7
+  ballSpeed: 9
   playerTransform: {fileID: 546907197}
   ballYOffset: 0.5
   lossBoundary: -20
@@ -975,7 +975,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   alienPrefab: {fileID: 6755442999611860872, guid: e8fe99093a863d64c800eafc55c74e00, type: 3}
   aliensPerRow: 8
+  numberOfRows: 4
   padding: 1.5
+  rowSpacing: 1.5
   moveSpeed: 2
   stepDownAmount: 0.5
   leftLimit: -16.5

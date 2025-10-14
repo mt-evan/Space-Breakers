@@ -6,7 +6,9 @@ public class AlienSwarmController : MonoBehaviour
 {
     public GameObject alienPrefab; // Prefab of the alien to spawn
     public int aliensPerRow = 8;
+    public int numberOfRows = 4;
     public float padding = 1.5f; // Padding for space between aliens
+    public float rowSpacing = 1.5f; // Padding for space between rows
     public float moveSpeed = 2.0f;
     public float stepDownAmount = 0.5f;
     public float leftLimit = -16.5f;
@@ -44,13 +46,20 @@ public class AlienSwarmController : MonoBehaviour
         // Calculate the starting x position to center the row
         float startingX = -totalWidth / 2;
 
-        // Spawns each of the aliens per row
-        for (int i = 0; i <aliensPerRow; i++)
+        // Loop each row
+        for (int j = 0; j < numberOfRows; j++)
         {
-            float xPosition = startingX + i * padding;
-            Vector3 spawnPosition = new Vector3(xPosition, 10, 0); // Note that this is hardcoded for y level
-            GameObject alien = Instantiate(alienPrefab, spawnPosition, Quaternion.identity, transform);
-            alienTransforms.Add(alien.transform);
+            // Calculate the y position for the row
+            float yPosition = 10 - (j * rowSpacing);
+
+            // Spawns each of the aliens per row
+            for (int i = 0; i < aliensPerRow; i++)
+            {
+                float xPosition = startingX + i * padding;
+                Vector3 spawnPosition = new Vector3(xPosition, yPosition, 0); // Note that this is hardcoded for y level
+                GameObject alien = Instantiate(alienPrefab, spawnPosition, Quaternion.identity, transform);
+                alienTransforms.Add(alien.transform);
+            }
         }
     }
 
@@ -72,7 +81,7 @@ public class AlienSwarmController : MonoBehaviour
             {
                 // Remove the null reference from the list
                 alienTransforms.RemoveAt(i);
-                continue; // Skip to the next iteration
+                continue;
             }
 
             // If the alien is valid, check its position for the boundary check
