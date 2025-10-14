@@ -3,18 +3,21 @@ using UnityEngine;
 public class BallController : MonoBehaviour
 {
     public float ballSpeed = 9f;
+    public PlayerController playerController;
     public Transform playerTransform;
     public float ballYOffset = 0.5f;
     public float lossBoundary = -20f; // The Y position where the ball is considered lost
 
     private Rigidbody2D rb;
     private bool inPlay = false; // Flag for checking if ball is still in play
+    private SpriteRenderer spriteRenderer; // Reference to the ball's visuals
 
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -22,14 +25,23 @@ public class BallController : MonoBehaviour
     {
         if (!inPlay)
         {
-            // If the ball is NOT in play, make it follow the player
-            transform.position = new Vector3(playerTransform.position.x, playerTransform.position.y + ballYOffset, 0);
-
-            // Check if the player launches the ball
-            if (Input.GetButtonDown("Jump"))
+            // Check if player is alive before doing anything
+            if (playerController != null && playerController.IsPlayerAlive())
             {
-                inPlay = true;
-                rb.velocity = Vector2.up * ballSpeed;
+                spriteRenderer.enabled = true;
+                // If the ball is NOT in play, make it follow the player
+                transform.position = new Vector3(playerTransform.position.x, playerTransform.position.y + ballYOffset, 0);
+
+                // Check if the player launches the ball
+                if (Input.GetButtonDown("Jump"))
+                {
+                    inPlay = true;
+                    rb.velocity = Vector2.up * ballSpeed;
+                }
+            }
+            else
+            {
+                spriteRenderer.enabled = false;
             }
         }
         else

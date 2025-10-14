@@ -18,6 +18,11 @@ public class PlayerController : MonoBehaviour
     private float moveInput;
     private bool isAlive = true;
 
+    // Allows other scripts, like BallController.cs, to check the player's state
+    public bool IsPlayerAlive()
+    {
+        return isAlive;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -69,21 +74,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    // Check if the collision is with the projectile
-    //    if (collision.gameObject.layer == LayerMask.NameToLayer("Projectiles"))
-    //    {
-    //        Destroy(collision.gameObject); // Destroy the projectile
-
-    //        // Only have the player die if it is not already in the respawning process
-    //        if (isAlive)
-    //        {
-    //            Die();
-    //        }
-    //    }
-    //}
 
     void Die()
     {

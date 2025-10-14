@@ -285,6 +285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ballSpeed: 9
+  playerController: {fileID: 546907198}
   playerTransform: {fileID: 546907197}
   ballYOffset: 0.5
   lossBoundary: -20
@@ -639,7 +640,7 @@ MonoBehaviour:
   moveSpeed: 10
   leftBoundary: -16.5
   rightBoundary: 16.5
-  respawnTime: 5
+  respawnTime: 3
 --- !u!61 &546907199
 BoxCollider2D:
   m_ObjectHideFlags: 0
