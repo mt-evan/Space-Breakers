@@ -986,6 +986,7 @@ MonoBehaviour:
   leftLimit: -16.5
   rightLimit: 16.5
   fireRate: 1
+  gameOverYPosition: -8
 --- !u!4 &1344553398
 Transform:
   m_ObjectHideFlags: 0

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class AlienSwarmController : MonoBehaviour
 {
-    public GameObject alienPrefab; // Prefab of the alien to spawn
-    public GameObject projectilePrefab; // Prefab of the projectile
+    public GameObject alienPrefab;
+    public GameObject projectilePrefab;
     public int aliensPerRow = 8;
     public int numberOfRows = 4;
     public float padding = 1.5f; // Padding for space between aliens
@@ -15,6 +15,7 @@ public class AlienSwarmController : MonoBehaviour
     public float leftLimit = -16.5f;
     public float rightLimit = 16.5f;
     public float fireRate = 1.0f; // How many seconds between firing
+    public float gameOverYPosition = -8.0f;
 
     
     private float alienWidth; // Alien's width for accurate boundary checks
@@ -24,6 +25,7 @@ public class AlienSwarmController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 1f; // When game restarts or starts, this makes sure time runs normally
         alienWidth = alienPrefab.GetComponent<BoxCollider2D>().bounds.size.x;
         SpawnAliens();
         StartCoroutine(FireProjectiles());
@@ -71,9 +73,10 @@ public class AlienSwarmController : MonoBehaviour
         Vector3 direction = movingRight ? Vector3.right : Vector3.left;
         transform.position += direction * moveSpeed * Time.deltaTime;
 
-        // Find the current leftmost and rightmost aliens of the swarm
+        // Find the current leftmost and rightmost and lowest aliens of the swarm
         float currentLeftmost = float.MaxValue;
         float currentRightmost = float.MinValue;
+        float currentLowest = float.MaxValue;
 
         // Loop backwards to safely remove destroyed aliens from the list
         for (int i = alienTransforms.Count - 1; i >= 0; i--)
@@ -94,6 +97,9 @@ public class AlienSwarmController : MonoBehaviour
             if (alienTransforms[i].position.x > currentRightmost)
             {
                 currentRightmost = alienTransforms[i].position.x;
+            }
+            if (alienTransforms[i].position.y < currentLowest) {
+                currentLowest = alienTransforms[i].position.y;
             }
         }
 
@@ -118,6 +124,21 @@ public class AlienSwarmController : MonoBehaviour
             currentPosition.y -= stepDownAmount; // Move down
             transform.position = currentPosition;
         }
+
+        // After all the movement, check if the lowest alien crossed the line to end the game
+        if (currentLowest <= gameOverYPosition)
+        {
+            GameOver();
+        }
+    }
+
+    void GameOver()
+    {
+        Debug.Log("GAME OVER - Aliens reached the bottom!");
+
+        // For now, end game by freezing time
+        // Later replace with a game over screen showing the score
+        Time.timeScale = 0f;
     }
 
     // Public method for the BallController.cs file to call to report that an alien is destroyed
