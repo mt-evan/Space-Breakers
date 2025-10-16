@@ -82,6 +82,11 @@ public class BallController : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Alien"))
         {
+            if (GameManager.instance != null)
+            {
+                GameManager.instance.AddScore(10); // Give 10 points per alien
+            }
+
             // Find the swarm controller on the parent of the alien
             AlienSwarmController swarmController = collision.transform.GetComponent<AlienSwarmController>();
             if (swarmController != null)

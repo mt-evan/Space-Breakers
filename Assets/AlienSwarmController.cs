@@ -128,17 +128,11 @@ public class AlienSwarmController : MonoBehaviour
         // After all the movement, check if the lowest alien crossed the line to end the game
         if (currentLowest <= gameOverYPosition)
         {
-            GameOver();
+            if (GameManager.instance != null)
+            {
+                GameManager.instance.GameOver();
+            }
         }
-    }
-
-    void GameOver()
-    {
-        Debug.Log("GAME OVER - Aliens reached the bottom!");
-
-        // For now, end game by freezing time
-        // Later replace with a game over screen showing the score
-        Time.timeScale = 0f;
     }
 
     // Public method for the BallController.cs file to call to report that an alien is destroyed
