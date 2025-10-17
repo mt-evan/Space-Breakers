@@ -1332,7 +1332,7 @@ MonoBehaviour:
   numberOfRows: 4
   padding: 1.5
   rowSpacing: 1.5
-  moveSpeed: 200
+  moveSpeed: 2
   stepDownAmount: 0.5
   leftLimit: -16.5
   rightLimit: 16.5

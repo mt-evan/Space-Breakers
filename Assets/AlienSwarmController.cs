@@ -14,7 +14,6 @@ public class AlienSwarmController : MonoBehaviour
     public float stepDownAmount = 0.5f;
     public float leftLimit = -16.5f;
     public float rightLimit = 16.5f;
-    public float fireRate = 1.0f; // How many seconds between firing
     public float gameOverYPosition = -8.0f;
 
     
@@ -28,7 +27,6 @@ public class AlienSwarmController : MonoBehaviour
         Time.timeScale = 1f; // When game restarts or starts, this makes sure time runs normally
         alienWidth = alienPrefab.GetComponent<BoxCollider2D>().bounds.size.x;
         SpawnAliens();
-        StartCoroutine(FireProjectiles());
     }
 
     // Update is called once per frame
@@ -60,9 +58,17 @@ public class AlienSwarmController : MonoBehaviour
             for (int i = 0; i < aliensPerRow; i++)
             {
                 float xPosition = startingX + i * padding;
-                Vector3 spawnPosition = new Vector3(xPosition, yPosition, 0); // Note that this is hardcoded for y level
+                Vector3 spawnPosition = new Vector3(xPosition, yPosition, 0);
                 GameObject alien = Instantiate(alienPrefab, spawnPosition, Quaternion.identity, transform);
+                alien.layer = LayerMask.NameToLayer("Aliens");
                 alienTransforms.Add(alien.transform);
+
+                // Get the AlienController on the new alien and give it a projectile prefab
+                AlienController alienController = alien.GetComponent<AlienController>();
+                if (alienController != null)
+                {
+                    alienController.projectilePrefab = this.projectilePrefab;
+                }
             }
         }
     }
@@ -141,29 +147,6 @@ public class AlienSwarmController : MonoBehaviour
         if (alienTransforms.Contains(alien))
         {
             alienTransforms.Remove(alien);
-        }
-    }
-
-    IEnumerator FireProjectiles()
-    {
-        // Loop as long as the game is running
-        while (true)
-        {
-            // Wait for the amount of time specified in fireRate
-            yield return new WaitForSeconds(fireRate);
-
-            // Clean up any null references from aliens that were destroyed
-            alienTransforms.RemoveAll(item => item == null);
-
-            if (alienTransforms.Count > 0)
-            {
-                // Select a random alien that is still alive
-                int randomIndex = Random.Range(0, alienTransforms.Count);
-                Transform firingAlien = alienTransforms[randomIndex];
-
-                // Make the projectile at the alien's position
-                Instantiate(projectilePrefab, firingAlien.position, Quaternion.identity);
-            }
         }
     }
 }
