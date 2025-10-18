@@ -1,6 +1,5 @@
 Musts:
 
-* Next level begins when all aliens are destroyed, and it is harder like aliens fire more often or aliens move faster
 * Power-ups
 
 * Replace basic bar and squares with the actual ship and alien looks
