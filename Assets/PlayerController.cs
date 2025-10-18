@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // How fast the player moves
     public float moveSpeed = 10f;
-
-    // The boundaries the player cannot pass
     public float leftBoundary = -16.5f;
     public float rightBoundary = 16.5f;
-
-    // Respawn wait time
     public float respawnTime = 5f;
 
     private Rigidbody2D rb;
@@ -24,13 +19,11 @@ public class PlayerController : MonoBehaviour
         return isAlive;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         // Only allow input from the user if the player is alive
@@ -45,7 +38,6 @@ public class PlayerController : MonoBehaviour
         rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
     }
 
-    // FixedUpdate is called on a fixed timer and is best for physics calculations
     void FixedUpdate()
     {
         if (isAlive)

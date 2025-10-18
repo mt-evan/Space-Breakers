@@ -1,18 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 public class AlienController : MonoBehaviour
 {
-    // This will all be set by AlienSwarmController when an alien is spawned
-    [HideInInspector] // Hides this from the Inspector because the AlienSwarmController will take care of it
+    [HideInInspector]
     public GameObject projectilePrefab;
+    [HideInInspector]
+    public float projectileSpeed;
 
     public float minFireDelay = 3.0f;
     public float maxFireDelay = 10.0f;
 
+    public float firstShotMinDelay = 0.5f;
+    public float firstShotMaxDelay = 2.0f;
 
-    // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(FireRepeatedly());
@@ -20,17 +21,25 @@ public class AlienController : MonoBehaviour
 
     IEnumerator FireRepeatedly()
     {
-        // Loop forever as long as the alien is alive
+        float initialDelay = Random.Range(firstShotMinDelay, firstShotMaxDelay);
+        yield return new WaitForSeconds(initialDelay);
+        FireShot();
+
         while (true)
         {
-            float fireDelay = Random.Range(minFireDelay, maxFireDelay);
-            yield return new WaitForSeconds(fireDelay);
+            float delay = Random.Range(minFireDelay, maxFireDelay);
+            yield return new WaitForSeconds(delay);
+            FireShot();
+        }
+    }
 
-            // Check if the projectile prefab has been assigned before firing again
-            if (projectilePrefab != null )
-            {
-                Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-            }
+    void FireShot()
+    {
+        if (projectilePrefab != null)
+        {
+            GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+            projectile.GetComponent<ProjectileController>().speed = this.projectileSpeed;
         }
     }
 }
+
