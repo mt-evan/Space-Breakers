@@ -10,15 +10,20 @@ public class AlienSwarmController : MonoBehaviour
     public int aliensPerRow = 8;
     public int numberOfRows = 4;
     public float padding = 1.5f;
-    public float rowSpacing = 1.0f;
-    public float gameOverYPosition = -3.5f;
+    public float rowSpacing = 1.5f;
+    public float startingYPosition = 10f;
+    public float gameOverYPosition = -8.0f;
 
     [Header("Level 1 Difficulty Settings")]
     public float baseMoveSpeed = 1.5f;
     public float baseProjectileSpeed = 5f;
     public float baseMinFireDelay = 4.0f;
-    public float baseMaxFireDelay = 10.0f;
+    public float baseMaxFireDelay = 20.0f;
     public float stepDownAmount = 0.5f;
+
+    [Header("Movement Boundaries")]
+    public float leftBoundary = -16.5f;
+    public float rightBoundary = 16.5f;
 
     private float moveSpeed;
     private float projectileSpeed;
@@ -29,6 +34,7 @@ public class AlienSwarmController : MonoBehaviour
     private List<Transform> alienTransforms = new List<Transform>();
     private bool isStopped = false;
 
+    #region Unchanged Initialization and Update
     public void InitializeLevel(int level)
     {
         moveSpeed = baseMoveSpeed + (level - 1) * 0.2f;
@@ -45,29 +51,51 @@ public class AlienSwarmController : MonoBehaviour
         if (isStopped) return;
         MoveSwarm();
     }
+    #endregion
 
+    void SpawnAliens()
+    {
+        for (int j = 0; j < numberOfRows; j++)
+        {
+            for (int i = 0; i < aliensPerRow; i++)
+            {
+                float totalWidth = (aliensPerRow - 1) * padding;
+                float startX = -totalWidth / 2;
+                // --- FIX: Use the new public variable instead of the hardcoded '4' ---
+                float yPos = startingYPosition - (j * rowSpacing);
+                float xPos = startX + i * padding;
+                Vector3 spawnPosition = new Vector3(xPos, yPos, 0);
+                GameObject alien = Instantiate(alienPrefab, spawnPosition, Quaternion.identity, transform);
+                alien.layer = LayerMask.NameToLayer("Aliens");
+                alienTransforms.Add(alien.transform);
+
+                AlienController alienController = alien.GetComponent<AlienController>();
+                if (alienController != null)
+                {
+                    alienController.projectilePrefab = this.projectilePrefab;
+                    alienController.projectileSpeed = this.projectileSpeed;
+                    alienController.minFireDelay = this.minFireDelay;
+                    alienController.maxFireDelay = this.maxFireDelay;
+                }
+            }
+        }
+    }
+
+    #region Unchanged Helper Functions and Movement
     void MoveSwarm()
     {
-        // --- THIS IS THE FIX ---
-        // First, clean up any destroyed aliens from the list.
-        // A destroyed Unity object will equal 'null' in a check like this.
         alienTransforms.RemoveAll(item => item == null);
-
-        // After cleaning, check if the wave is cleared.
         if (alienTransforms.Count == 0)
         {
             if (!isStopped)
             {
                 isStopped = true;
                 GameManager.instance.WaveCleared();
-                // Use SetActive(false) instead of Destroy to prevent race conditions.
                 gameObject.SetActive(false);
             }
-            return; // Stop the rest of the function from running.
+            return;
         }
-        // --- END OF FIX ---
 
-        #region Unchanged Movement Code
         Vector3 direction = movingRight ? Vector3.right : Vector3.left;
         transform.position += direction * moveSpeed * Time.deltaTime;
         float currentLeftmost = float.MaxValue;
@@ -85,9 +113,9 @@ public class AlienSwarmController : MonoBehaviour
         }
 
         bool changeDirection = false;
-        if (movingRight && (currentRightmost + (alienWidth / 2)) >= 8.5f)
+        if (movingRight && (currentRightmost + (alienWidth / 2)) >= rightBoundary)
             changeDirection = true;
-        else if (!movingRight && (currentLeftmost - (alienWidth / 2)) <= -8.5f)
+        else if (!movingRight && (currentLeftmost - (alienWidth / 2)) <= leftBoundary)
             changeDirection = true;
 
         if (changeDirection)
@@ -102,7 +130,6 @@ public class AlienSwarmController : MonoBehaviour
         {
             GameManager.instance.GameOver();
         }
-        #endregion
     }
 
     public void StopSwarm()
@@ -110,40 +137,11 @@ public class AlienSwarmController : MonoBehaviour
         isStopped = true;
     }
 
-    // This function is no longer needed by the BallController but can be kept for other uses.
     public void RemoveAlien(Transform alien)
     {
         if (alienTransforms.Contains(alien))
         {
             alienTransforms.Remove(alien);
-        }
-    }
-
-    #region Unchanged Spawning Code
-    void SpawnAliens()
-    {
-        for (int j = 0; j < numberOfRows; j++)
-        {
-            for (int i = 0; i < aliensPerRow; i++)
-            {
-                float totalWidth = (aliensPerRow - 1) * padding;
-                float startX = -totalWidth / 2;
-                float yPos = 4 - (j * rowSpacing);
-                float xPos = startX + i * padding;
-                Vector3 spawnPosition = new Vector3(xPos, yPos, 0);
-                GameObject alien = Instantiate(alienPrefab, spawnPosition, Quaternion.identity, transform);
-                alien.layer = LayerMask.NameToLayer("Aliens");
-                alienTransforms.Add(alien.transform);
-
-                AlienController alienController = alien.GetComponent<AlienController>();
-                if (alienController != null)
-                {
-                    alienController.projectilePrefab = this.projectilePrefab;
-                    alienController.projectileSpeed = this.projectileSpeed;
-                    alienController.minFireDelay = this.minFireDelay;
-                    alienController.maxFireDelay = this.maxFireDelay;
-                }
-            }
         }
     }
     #endregion

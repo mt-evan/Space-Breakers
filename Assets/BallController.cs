@@ -11,7 +11,6 @@ public class BallController : MonoBehaviour
     private bool inPlay = false;
     private SpriteRenderer spriteRenderer;
 
-    #region Unchanged Code
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -55,7 +54,6 @@ public class BallController : MonoBehaviour
             Destroy(other.gameObject);
         }
     }
-    #endregion
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -74,14 +72,14 @@ public class BallController : MonoBehaviour
             {
                 GameManager.instance.AddScore(10);
             }
-
-            // --- THIS IS THE FIX ---
-            // The AlienSwarmController is now responsible for tracking destroyed aliens.
-            // We no longer need to call a function on it from here.
-
-            // Just destroy the alien.
             Destroy(collision.gameObject);
         }
+    }
+
+    public void ResetBallToPlayer()
+    {
+        inPlay = false;
+        rb.velocity = Vector2.zero;
     }
 }
 

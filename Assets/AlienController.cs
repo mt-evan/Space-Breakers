@@ -8,27 +8,27 @@ public class AlienController : MonoBehaviour
     [HideInInspector]
     public float projectileSpeed;
 
-    public float minFireDelay = 3.0f;
-    public float maxFireDelay = 10.0f;
+    // These are now set by the AlienSwarmController
+    [HideInInspector] public float minFireDelay = 3.0f;
+    [HideInInspector] public float maxFireDelay = 20.0f;
 
-    public float firstShotMinDelay = 0.5f;
-    public float firstShotMaxDelay = 2.0f;
-
-    void Start()
+    IEnumerator Start()
     {
+        // Wait for a small, unique, and random delay
+        // This staggers each alien's firing timer so they don't all start at once
+        yield return new WaitForSeconds(Random.Range(0.0f, 2.0f));
         StartCoroutine(FireRepeatedly());
     }
 
     IEnumerator FireRepeatedly()
     {
-        float initialDelay = Random.Range(firstShotMinDelay, firstShotMaxDelay);
-        yield return new WaitForSeconds(initialDelay);
-        FireShot();
-
+        // This will loop forever for the lifetime of this alien.
         while (true)
         {
+            // Wait for the normal firing delay for all subsequent shots.
             float delay = Random.Range(minFireDelay, maxFireDelay);
             yield return new WaitForSeconds(delay);
+
             FireShot();
         }
     }

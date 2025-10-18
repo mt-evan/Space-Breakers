@@ -286,7 +286,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ballSpeed: 9
   playerController: {fileID: 546907198}
-  playerTransform: {fileID: 546907197}
   ballYOffset: 0.5
   lossBoundary: -20
 --- !u!1 &33365606
@@ -392,6 +391,8 @@ MonoBehaviour:
   highScoreText: {fileID: 1966910526}
   levelClearPanel: {fileID: 1468760848}
   swarmPrefab: {fileID: 7806884773172712877, guid: c7b58a0158768124ca5cbf1b0c18c03e, type: 3}
+  playerController: {fileID: 546907198}
+  ballController: {fileID: 32011801}
 --- !u!4 &43125719
 Transform:
   m_ObjectHideFlags: 0
@@ -912,9 +913,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
-  leftBoundary: -16.5
-  rightBoundary: 16.5
-  respawnTime: 3
+  leftLimit: -8.5
+  rightLimit: 8.5
+  ballController: {fileID: 32011801}
 --- !u!61 &546907199
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1413,8 +1414,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 26.299988, y: 0}
-  m_SizeDelta: {x: 513.82, y: 0}
+  m_AnchoredPosition: {x: 26.300049, y: -17.08}
+  m_SizeDelta: {x: 513.82, y: 34.16}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1468760850
 MonoBehaviour:

@@ -7,15 +7,18 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    // --- UI REFERENCES ---
+    [Header("UI References")]
     public Text scoreText;
     public GameObject gameOverPanel;
     public Text finalScoreText;
     public Text highScoreText;
     public GameObject levelClearPanel;
 
-    // --- LEVEL MANAGEMENT ---
-    public AlienSwarmController swarmPrefab; // This MUST be a prefab from your Project folder
+    [Header("Game Object References")]
+    public AlienSwarmController swarmPrefab;
+    public PlayerController playerController;
+    public BallController ballController;
+
     private AlienSwarmController currentSwarm;
     private int currentLevel = 0;
     private int score = 0;
@@ -71,6 +74,16 @@ public class GameManager : MonoBehaviour
         currentLevel++;
         if (scoreText != null) scoreText.gameObject.SetActive(true);
 
+        // Reset player and ball position for new level
+        if (playerController != null)
+        {
+            playerController.ResetPlayerPosition();
+        }
+        if (ballController != null)
+        {
+            ballController.ResetBallToPlayer();
+        }
+
         currentSwarm = Instantiate(swarmPrefab, Vector3.zero, Quaternion.identity);
         currentSwarm.InitializeLevel(currentLevel);
     }
@@ -83,10 +96,9 @@ public class GameManager : MonoBehaviour
         }
 
         Time.timeScale = 0f;
-        // --- FIX: Add a null check before trying to hide the score ---
         if (scoreText != null)
         {
-            scoreText.gameObject.SetActive(false); // Hide the score
+            scoreText.gameObject.SetActive(false);
         }
 
         int highScore = PlayerPrefs.GetInt(HighScoreKey, 0);
