@@ -10,11 +10,13 @@ public class BallController : MonoBehaviour
     private Rigidbody2D rb;
     private bool inPlay = false;
     private SpriteRenderer spriteRenderer;
+    private CircleCollider2D circleCollider;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        circleCollider = GetComponent<CircleCollider2D>();
     }
 
     void Update()
@@ -53,6 +55,15 @@ public class BallController : MonoBehaviour
         {
             Destroy(other.gameObject);
         }
+        // If the ball is piercing and hits an alien
+        else if (circleCollider.isTrigger && other.gameObject.CompareTag("Alien"))
+        {
+            if (GameManager.instance != null)
+            {
+                GameManager.instance.AddScore(10);
+            }
+            Destroy(other.gameObject);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -72,8 +83,17 @@ public class BallController : MonoBehaviour
             {
                 GameManager.instance.AddScore(10);
             }
-            Destroy(collision.gameObject);
+            // Only destroy the alien on collision if Pierce is NOT active
+            if (GameManager.instance == null || !GameManager.instance.IsPierceActive())
+            {
+                Destroy(collision.gameObject);
+            }
         }
+    }
+
+    public void SetPierce(bool isActive)
+    {
+        circleCollider.isTrigger = isActive;
     }
 
     public void ResetBallToPlayer()
@@ -82,4 +102,3 @@ public class BallController : MonoBehaviour
         rb.velocity = Vector2.zero;
     }
 }
-

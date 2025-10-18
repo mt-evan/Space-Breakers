@@ -24,6 +24,12 @@ public class GameManager : MonoBehaviour
     private int score = 0;
     private const string HighScoreKey = "HighScore";
 
+    private bool pierceActive = false;
+    private bool shieldActive = false;
+
+    public bool IsPierceActive() { return pierceActive; }
+    public bool IsShieldActive() { return shieldActive; }
+
     void Awake()
     {
         if (instance == null)
@@ -117,6 +123,42 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void ActivatePowerUp(PowerUpController.PowerUpType type)
+    {
+        // Stop any existing coroutine of the same type to reset its timer if collected again
+        StopCoroutine(type.ToString() + "PowerUpRoutine");
+        StartCoroutine(type.ToString() + "PowerUpRoutine");
+    }
+
+    IEnumerator PiercePowerUpRoutine()
+    {
+        pierceActive = true;
+        ballController.SetPierce(true);
+        yield return new WaitForSeconds(15f); // Duration of the power-up
+        pierceActive = false;
+        ballController.SetPierce(false);
+    }
+
+    IEnumerator ShieldPowerUpRoutine()
+    {
+        shieldActive = true;
+        yield return new WaitForSeconds(20f); // Duration of the power-up
+        shieldActive = false;
+    }
+
+    IEnumerator FreezePowerUpRoutine()
+    {
+        if (currentSwarm != null)
+        {
+            currentSwarm.StopSwarm(); // Stop movement and firing
+        }
+        yield return new WaitForSeconds(15f); // Duration of the power-up
+        if (currentSwarm != null)
+        {
+            currentSwarm.ResumeSwarm(); // Resume movement and firing
+        }
     }
 }
 

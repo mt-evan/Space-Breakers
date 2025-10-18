@@ -46,6 +46,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   alienPrefab: {fileID: 6755442999611860872, guid: e8fe99093a863d64c800eafc55c74e00, type: 3}
   projectilePrefab: {fileID: 7226868385607252900, guid: ad5904765302d3b4f9eff75de072da13, type: 3}
+  powerUpPrefabs:
+  - {fileID: 7306718821444711030, guid: d844868b61b149c4492e221b8f74ef56, type: 3}
+  - {fileID: 7740502556740522863, guid: 90e31c2e953ed7648958a2d1aa3e0f6e, type: 3}
+  - {fileID: 6780965354627692561, guid: 7a5aa4266d0202c46bc1fa4a1cb21e22, type: 3}
   aliensPerRow: 8
   numberOfRows: 4
   padding: 1.5

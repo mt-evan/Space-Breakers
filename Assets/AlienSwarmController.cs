@@ -7,6 +7,7 @@ public class AlienSwarmController : MonoBehaviour
     [Header("Spawning Settings")]
     public GameObject alienPrefab;
     public GameObject projectilePrefab;
+    public List<GameObject> powerUpPrefabs;
     public int aliensPerRow = 8;
     public int numberOfRows = 4;
     public float padding = 1.5f;
@@ -34,7 +35,6 @@ public class AlienSwarmController : MonoBehaviour
     private List<Transform> alienTransforms = new List<Transform>();
     private bool isStopped = false;
 
-    #region Unchanged Initialization and Update
     public void InitializeLevel(int level)
     {
         moveSpeed = baseMoveSpeed + (level - 1) * 0.2f;
@@ -48,10 +48,10 @@ public class AlienSwarmController : MonoBehaviour
 
     void Update()
     {
+        // If the swarm is stopped by something like the Freeze power-up, do nothing
         if (isStopped) return;
         MoveSwarm();
     }
-    #endregion
 
     void SpawnAliens()
     {
@@ -61,7 +61,6 @@ public class AlienSwarmController : MonoBehaviour
             {
                 float totalWidth = (aliensPerRow - 1) * padding;
                 float startX = -totalWidth / 2;
-                // --- FIX: Use the new public variable instead of the hardcoded '4' ---
                 float yPos = startingYPosition - (j * rowSpacing);
                 float xPos = startX + i * padding;
                 Vector3 spawnPosition = new Vector3(xPos, yPos, 0);
@@ -72,6 +71,8 @@ public class AlienSwarmController : MonoBehaviour
                 AlienController alienController = alien.GetComponent<AlienController>();
                 if (alienController != null)
                 {
+                    alienController.powerUpPrefabs = this.powerUpPrefabs;
+
                     alienController.projectilePrefab = this.projectilePrefab;
                     alienController.projectileSpeed = this.projectileSpeed;
                     alienController.minFireDelay = this.minFireDelay;
@@ -81,7 +82,6 @@ public class AlienSwarmController : MonoBehaviour
         }
     }
 
-    #region Unchanged Helper Functions and Movement
     void MoveSwarm()
     {
         alienTransforms.RemoveAll(item => item == null);
@@ -137,13 +137,8 @@ public class AlienSwarmController : MonoBehaviour
         isStopped = true;
     }
 
-    public void RemoveAlien(Transform alien)
+    public void ResumeSwarm()
     {
-        if (alienTransforms.Contains(alien))
-        {
-            alienTransforms.Remove(alien);
-        }
+        isStopped = false;
     }
-    #endregion
 }
-

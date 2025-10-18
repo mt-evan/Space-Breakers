@@ -38,13 +38,34 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // Check if we hit a projectile
         if (other.gameObject.layer == LayerMask.NameToLayer("Projectiles"))
         {
+            // Check with the GameManager if the shield is active
+            if (GameManager.instance != null && GameManager.instance.IsShieldActive())
+            {
+                // If shield is active, just destroy the projectile and do nothing else
+                Destroy(other.gameObject);
+                return;
+            }
+
             Destroy(other.gameObject);
             if (isAlive)
             {
                 Die();
             }
+        }
+        // Check if we hit a power-up
+        else if (other.gameObject.layer == LayerMask.NameToLayer("PowerUps"))
+        {
+            PowerUpController powerUp = other.GetComponent<PowerUpController>();
+            if (powerUp != null && GameManager.instance != null)
+            {
+                // Tell the GameManager which power-up was collected
+                GameManager.instance.ActivatePowerUp(powerUp.type);
+            }
+            // Destroy the power-up object after collecting it
+            Destroy(other.gameObject);
         }
     }
 

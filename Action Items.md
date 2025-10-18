@@ -1,6 +1,6 @@
 Musts:
 
-* Power-ups
+* Power-ups (the freeze alien power-up should also make the aliens not fire and the red powerup of pierce makes the ball go through the walls)
 
 * Replace basic bar and squares with the actual ship and alien looks
 * when game is over, the Game Over screen appears with the score and high score displayed. make it look nice.

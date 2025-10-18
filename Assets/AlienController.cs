@@ -1,16 +1,16 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AlienController : MonoBehaviour
 {
-    [HideInInspector]
-    public GameObject projectilePrefab;
-    [HideInInspector]
-    public float projectileSpeed;
-
-    // These are now set by the AlienSwarmController
+    [HideInInspector] public GameObject projectilePrefab;
+    [HideInInspector] public float projectileSpeed;
     [HideInInspector] public float minFireDelay = 3.0f;
     [HideInInspector] public float maxFireDelay = 20.0f;
+
+    [HideInInspector] public List<GameObject> powerUpPrefabs;
+    public float powerUpDropChance = 0.1f; // 10% chance for an alien to drop a power-up
 
     IEnumerator Start()
     {
@@ -41,5 +41,28 @@ public class AlienController : MonoBehaviour
             projectile.GetComponent<ProjectileController>().speed = this.projectileSpeed;
         }
     }
-}
 
+    private void OnDestroy()
+    {
+        // Check if the game is closing or else potential error could occur
+        if (GameManager.instance != null)
+        {
+            // Check if we should drop a power-up
+            if (Random.value < powerUpDropChance)
+            {
+                DropPowerUp();
+            }
+        }
+    }
+
+    void DropPowerUp()
+    {
+        // Checks that the list of power-ups is valid, maybe this check is not needed
+        if (powerUpPrefabs != null && powerUpPrefabs.Count > 0)
+        {
+            int randomIndex = Random.Range(0, powerUpPrefabs.Count);
+            GameObject chosenPowerUp = powerUpPrefabs[randomIndex];
+            Instantiate(chosenPowerUp, transform.position, Quaternion.identity);
+        }
+    }
+}
