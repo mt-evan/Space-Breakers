@@ -4,7 +4,6 @@ public class BallController : MonoBehaviour
 {
     public float ballSpeed = 9f;
     public PlayerController playerController;
-    public Transform playerTransform;
     public float ballYOffset = 0.5f;
     public float lossBoundary = -20f;
 
@@ -12,6 +11,7 @@ public class BallController : MonoBehaviour
     private bool inPlay = false;
     private SpriteRenderer spriteRenderer;
 
+    #region Unchanged Code
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -25,7 +25,6 @@ public class BallController : MonoBehaviour
             if (playerController != null && playerController.IsPlayerAlive())
             {
                 spriteRenderer.enabled = true;
-                // Use the playerController's transform for positioning
                 transform.position = new Vector3(playerController.transform.position.x, playerController.transform.position.y + ballYOffset, 0);
 
                 if (Input.GetButtonDown("Jump"))
@@ -56,6 +55,7 @@ public class BallController : MonoBehaviour
             Destroy(other.gameObject);
         }
     }
+    #endregion
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -75,13 +75,11 @@ public class BallController : MonoBehaviour
                 GameManager.instance.AddScore(10);
             }
 
-            // Use GetComponentInParent to find the script on the parent object.
-            AlienSwarmController swarmController = collision.transform.GetComponentInParent<AlienSwarmController>();
-            if (swarmController != null)
-            {
-                swarmController.RemoveAlien(collision.transform);
-            }
+            // --- THIS IS THE FIX ---
+            // The AlienSwarmController is now responsible for tracking destroyed aliens.
+            // We no longer need to call a function on it from here.
 
+            // Just destroy the alien.
             Destroy(collision.gameObject);
         }
     }

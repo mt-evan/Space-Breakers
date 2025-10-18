@@ -20,12 +20,10 @@ public class AlienSwarmController : MonoBehaviour
     public float baseMaxFireDelay = 10.0f;
     public float stepDownAmount = 0.5f;
 
-    // These variables will be calculated based on the level
     private float moveSpeed;
     private float projectileSpeed;
     private float minFireDelay;
     private float maxFireDelay;
-
     private float alienWidth;
     private bool movingRight = true;
     private List<Transform> alienTransforms = new List<Transform>();
@@ -33,7 +31,6 @@ public class AlienSwarmController : MonoBehaviour
 
     public void InitializeLevel(int level)
     {
-        // Increase difficulty based on the public base stats
         moveSpeed = baseMoveSpeed + (level - 1) * 0.2f;
         projectileSpeed = baseProjectileSpeed + (level - 1) * 0.3f;
         minFireDelay = Mathf.Max(0.5f, baseMinFireDelay - (level - 1) * 0.25f);
@@ -43,28 +40,34 @@ public class AlienSwarmController : MonoBehaviour
         SpawnAliens();
     }
 
-    // ... The rest of the script remains unchanged ...
-    #region Unchanged Code
     void Update()
     {
-        if (isStopped || alienTransforms.Count == 0) return;
+        if (isStopped) return;
         MoveSwarm();
     }
 
     void MoveSwarm()
     {
+        // --- THIS IS THE FIX ---
+        // First, clean up any destroyed aliens from the list.
+        // A destroyed Unity object will equal 'null' in a check like this.
         alienTransforms.RemoveAll(item => item == null);
+
+        // After cleaning, check if the wave is cleared.
         if (alienTransforms.Count == 0)
         {
             if (!isStopped)
             {
                 isStopped = true;
                 GameManager.instance.WaveCleared();
-                Destroy(gameObject);
+                // Use SetActive(false) instead of Destroy to prevent race conditions.
+                gameObject.SetActive(false);
             }
-            return;
+            return; // Stop the rest of the function from running.
         }
+        // --- END OF FIX ---
 
+        #region Unchanged Movement Code
         Vector3 direction = movingRight ? Vector3.right : Vector3.left;
         transform.position += direction * moveSpeed * Time.deltaTime;
         float currentLeftmost = float.MaxValue;
@@ -99,6 +102,7 @@ public class AlienSwarmController : MonoBehaviour
         {
             GameManager.instance.GameOver();
         }
+        #endregion
     }
 
     public void StopSwarm()
@@ -106,6 +110,7 @@ public class AlienSwarmController : MonoBehaviour
         isStopped = true;
     }
 
+    // This function is no longer needed by the BallController but can be kept for other uses.
     public void RemoveAlien(Transform alien)
     {
         if (alienTransforms.Contains(alien))
@@ -114,6 +119,7 @@ public class AlienSwarmController : MonoBehaviour
         }
     }
 
+    #region Unchanged Spawning Code
     void SpawnAliens()
     {
         for (int j = 0; j < numberOfRows; j++)

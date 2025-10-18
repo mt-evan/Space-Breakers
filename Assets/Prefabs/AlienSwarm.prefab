@@ -46,8 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   alienPrefab: {fileID: 6755442999611860872, guid: e8fe99093a863d64c800eafc55c74e00, type: 3}
   projectilePrefab: {fileID: 7226868385607252900, guid: ad5904765302d3b4f9eff75de072da13, type: 3}
-  aliensPerRow: 8
-  numberOfRows: 4
+  aliensPerRow: 1
+  numberOfRows: 1
   padding: 1.5
   rowSpacing: 1.5
   gameOverYPosition: -8
