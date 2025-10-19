@@ -10,7 +10,7 @@ public class BallController : MonoBehaviour
     public LayerMask alienLayer;
     private float ballRadius;
 
-    public Sprite defaultSprite; // blue orb
+    public Sprite defaultSprite; // yellow orb
     public Sprite pierceSprite; // red orb
 
     private Rigidbody2D rb;
