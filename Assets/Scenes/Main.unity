@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 32011800}
   - component: {fileID: 32011799}
   - component: {fileID: 32011801}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -288,6 +288,9 @@ MonoBehaviour:
   playerController: {fileID: 546907198}
   ballYOffset: 0.5
   lossBoundary: -20
+  alienLayer:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &33365606
 GameObject:
   m_ObjectHideFlags: 0

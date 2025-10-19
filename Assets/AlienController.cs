@@ -11,13 +11,32 @@ public class AlienController : MonoBehaviour
 
     [HideInInspector] public List<GameObject> powerUpPrefabs;
     public float powerUpDropChance = 0.1f; // 10% chance for an alien to drop a power-up
+    private Coroutine firingCoroutine;
 
     IEnumerator Start()
     {
         // Wait for a small, unique, and random delay
         // This staggers each alien's firing timer so they don't all start at once
         yield return new WaitForSeconds(Random.Range(0.0f, 2.0f));
-        StartCoroutine(FireRepeatedly());
+        firingCoroutine = StartCoroutine(FireRepeatedly());
+    }
+
+    public void StopFiring()
+    {
+        if (firingCoroutine != null)
+        {
+            StopCoroutine(firingCoroutine);
+        }
+    }
+
+    public void ResumeFiring()
+    {
+        // Don't start a new one if it's already running
+        if (firingCoroutine != null)
+        {
+            StopCoroutine(firingCoroutine);
+        }
+        firingCoroutine = StartCoroutine(FireRepeatedly());
     }
 
     IEnumerator FireRepeatedly()

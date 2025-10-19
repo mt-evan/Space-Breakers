@@ -135,10 +135,24 @@ public class AlienSwarmController : MonoBehaviour
     public void StopSwarm()
     {
         isStopped = true;
+        foreach (Transform alien in alienTransforms)
+        {
+            if (alien != null)
+            {
+                alien.GetComponent<AlienController>().StopFiring();
+            }
+        }
     }
 
     public void ResumeSwarm()
     {
         isStopped = false;
+        foreach (Transform alien in alienTransforms)
+        {
+            if (alien != null)
+            {
+                alien.GetComponent<AlienController>().ResumeFiring();
+            }
+        }
     }
 }

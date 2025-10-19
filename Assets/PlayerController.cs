@@ -86,8 +86,8 @@ public class PlayerController : MonoBehaviour
         // Resets the player after death
         ResetPlayerPosition();
 
-        // After a respawn, tell the ball to reset itself.
-        if (ballController != null)
+        // After a respawn, tell the ball to reset itself only if it is not currently in play.
+        if (ballController != null && !ballController.IsInPlay())
         {
             ballController.ResetBallToPlayer();
         }

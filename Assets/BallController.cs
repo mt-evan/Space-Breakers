@@ -7,16 +7,18 @@ public class BallController : MonoBehaviour
     public float ballYOffset = 0.5f;
     public float lossBoundary = -20f;
 
+    public LayerMask alienLayer;
+    private float ballRadius;
+
     private Rigidbody2D rb;
     private bool inPlay = false;
     private SpriteRenderer spriteRenderer;
-    private CircleCollider2D circleCollider;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        circleCollider = GetComponent<CircleCollider2D>();
+        ballRadius = GetComponent<CircleCollider2D>().radius;
     }
 
     void Update()
@@ -46,23 +48,28 @@ public class BallController : MonoBehaviour
                 inPlay = false;
                 rb.velocity = Vector2.zero;
             }
+
+            // If the pierce powerup is active, constantly check for aliens to destroy
+            if (GameManager.instance != null && GameManager.instance.IsPierceActive())
+            {
+                CheckForPierceableAliens();
+            }
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    void CheckForPierceableAliens()
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Projectiles"))
-        {
-            Destroy(other.gameObject);
-        }
-        // If the ball is piercing and hits an alien
-        else if (circleCollider.isTrigger && other.gameObject.CompareTag("Alien"))
+        // Create an invisible circle around the ball and get a list of all aliens inside it.
+        Collider2D[] aliensToDestroy = Physics2D.OverlapCircleAll(transform.position, ballRadius, alienLayer);
+
+        // Loop through the list and destroy each one.
+        foreach (Collider2D alien in aliensToDestroy)
         {
             if (GameManager.instance != null)
             {
                 GameManager.instance.AddScore(10);
             }
-            Destroy(other.gameObject);
+            Destroy(alien.gameObject);
         }
     }
 
@@ -83,22 +90,28 @@ public class BallController : MonoBehaviour
             {
                 GameManager.instance.AddScore(10);
             }
-            // Only destroy the alien on collision if Pierce is NOT active
-            if (GameManager.instance == null || !GameManager.instance.IsPierceActive())
-            {
-                Destroy(collision.gameObject);
-            }
+            // If pierce is active, the physics engine will ignore this collision.
+            // If it's not active, this code will run and destroy the alien.
+            Destroy(collision.gameObject);
         }
     }
 
-    public void SetPierce(bool isActive)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        circleCollider.isTrigger = isActive;
+        if (other.gameObject.layer == LayerMask.NameToLayer("Projectiles"))
+        {
+            Destroy(other.gameObject);
+        }
     }
 
     public void ResetBallToPlayer()
     {
         inPlay = false;
         rb.velocity = Vector2.zero;
+    }
+
+    public bool IsInPlay()
+    {
+        return inPlay;
     }
 }

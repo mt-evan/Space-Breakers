@@ -135,10 +135,17 @@ public class GameManager : MonoBehaviour
     IEnumerator PiercePowerUpRoutine()
     {
         pierceActive = true;
-        ballController.SetPierce(true);
-        yield return new WaitForSeconds(15f); // Duration of the power-up
+
+        int ballLayer = LayerMask.NameToLayer("Ball");
+        int alienLayer = LayerMask.NameToLayer("Aliens");
+
+        Physics2D.IgnoreLayerCollision(ballLayer, alienLayer, true);
+
+        yield return new WaitForSeconds(15f);
+
+        Physics2D.IgnoreLayerCollision(ballLayer, alienLayer, false);
+
         pierceActive = false;
-        ballController.SetPierce(false);
     }
 
     IEnumerator ShieldPowerUpRoutine()
