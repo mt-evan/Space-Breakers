@@ -291,6 +291,8 @@ MonoBehaviour:
   alienLayer:
     serializedVersion: 2
     m_Bits: 256
+  defaultSprite: {fileID: 21300000, guid: 5e53371a9c09aaa4ebd7f6f6592c069e, type: 3}
+  pierceSprite: {fileID: 21300000, guid: 4666305341ae85142abe57b3728f2e64, type: 3}
 --- !u!1 &33365606
 GameObject:
   m_ObjectHideFlags: 0

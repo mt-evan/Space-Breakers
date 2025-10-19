@@ -10,6 +10,9 @@ public class BallController : MonoBehaviour
     public LayerMask alienLayer;
     private float ballRadius;
 
+    public Sprite defaultSprite; // blue orb
+    public Sprite pierceSprite; // red orb
+
     private Rigidbody2D rb;
     private bool inPlay = false;
     private SpriteRenderer spriteRenderer;
@@ -117,5 +120,17 @@ public class BallController : MonoBehaviour
     public bool IsInPlay()
     {
         return inPlay;
+    }
+
+    public void SetAppearance(bool isPiercing)
+    {
+        if (isPiercing)
+        {
+            spriteRenderer.sprite = pierceSprite;
+        }
+        else
+        {
+            spriteRenderer.sprite = defaultSprite;
+        }
     }
 }

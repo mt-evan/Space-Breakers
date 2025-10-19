@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
 
     private bool pierceActive = false;
     private bool shieldActive = false;
-
     public bool IsPierceActive() { return pierceActive; }
     public bool IsShieldActive() { return shieldActive; }
 
@@ -148,6 +147,11 @@ public class GameManager : MonoBehaviour
     {
         pierceActive = true;
 
+        if (ballController != null)
+        {
+            ballController.SetAppearance(true);
+        }
+
         int ballLayer = LayerMask.NameToLayer("Ball");
         int alienLayer = LayerMask.NameToLayer("Aliens");
 
@@ -156,6 +160,11 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(15f);
 
         Physics2D.IgnoreLayerCollision(ballLayer, alienLayer, false);
+
+        if (ballController != null)
+        {
+            ballController.SetAppearance(false);
+        }
 
         pierceActive = false;
     }
