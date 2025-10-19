@@ -9,9 +9,11 @@ public class GameManager : MonoBehaviour
 
     [Header("UI References")]
     public Text scoreText;
+    public Text levelText;
     public GameObject gameOverPanel;
     public Text finalScoreText;
     public Text highScoreText;
+    public Text finalLevelText;
     public GameObject levelClearPanel;
 
     [Header("Game Object References")]
@@ -47,19 +49,27 @@ public class GameManager : MonoBehaviour
         gameOverPanel.SetActive(false);
         levelClearPanel.SetActive(false);
         if (scoreText != null) scoreText.gameObject.SetActive(true);
-        UpdateScoreUI();
+        UpdateGameUI();
         StartCoroutine(StartNextLevel());
     }
 
     public void AddScore(int points)
     {
         score += points;
-        UpdateScoreUI();
+        UpdateGameUI();
     }
 
-    void UpdateScoreUI()
+    public void SubtractScore(int points)
+    {
+        score -= points;
+        if (score < 0) score = 0;
+        UpdateGameUI();
+    }
+
+    void UpdateGameUI()
     {
         if (scoreText != null) scoreText.text = "Score: " + score;
+        if (levelText != null) levelText.text = "Level: " + currentLevel;
     }
 
     public void WaveCleared()
@@ -72,6 +82,7 @@ public class GameManager : MonoBehaviour
         if (currentLevel > 0)
         {
             if (scoreText != null) scoreText.gameObject.SetActive(false);
+            if (levelText != null) levelText.gameObject.SetActive(false);
             levelClearPanel.SetActive(true);
             yield return new WaitForSeconds(2.0f);
             levelClearPanel.SetActive(false);
@@ -79,6 +90,8 @@ public class GameManager : MonoBehaviour
 
         currentLevel++;
         if (scoreText != null) scoreText.gameObject.SetActive(true);
+        if (levelText != null) levelText.gameObject.SetActive(true);
+        UpdateGameUI();
 
         // Reset player and ball position for new level
         if (playerController != null)
@@ -102,10 +115,8 @@ public class GameManager : MonoBehaviour
         }
 
         Time.timeScale = 0f;
-        if (scoreText != null)
-        {
-            scoreText.gameObject.SetActive(false);
-        }
+        if (scoreText != null) scoreText.gameObject.SetActive(false);
+        if (levelText != null) levelText.gameObject.SetActive(false);
 
         int highScore = PlayerPrefs.GetInt(HighScoreKey, 0);
         if (score > highScore)
@@ -116,6 +127,7 @@ public class GameManager : MonoBehaviour
         }
         finalScoreText.text = "Your Score: " + score;
         highScoreText.text = "High Score: " + highScore;
+        finalLevelText.text = "Level Reached: " + currentLevel;
         gameOverPanel.SetActive(true);
     }
 

@@ -71,6 +71,11 @@ public class PlayerController : MonoBehaviour
 
     void Die()
     {
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.SubtractScore(100);
+        }
+
         isAlive = false;
         rb.velocity = Vector2.zero;
         moveInput = 0f;

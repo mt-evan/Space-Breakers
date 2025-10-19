@@ -45,6 +45,10 @@ public class BallController : MonoBehaviour
         {
             if (transform.position.y < lossBoundary)
             {
+                if (GameManager.instance != null)
+                {
+                    GameManager.instance.SubtractScore(10);
+                }
                 inPlay = false;
                 rb.velocity = Vector2.zero;
             }
