@@ -81,6 +81,11 @@ public class PlayerController : MonoBehaviour
         moveInput = 0f;
         GetComponent<SpriteRenderer>().enabled = false;
         GetComponent<BoxCollider2D>().enabled = false;
+
+        if (ballController != null && !ballController.IsInPlay())
+        {
+            ballController.ResetBallToPlayer();
+        }
         StartCoroutine(RespawnPlayer());
     }
 

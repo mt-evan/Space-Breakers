@@ -115,6 +115,12 @@ public class BallController : MonoBehaviour
     {
         inPlay = false;
         rb.velocity = Vector2.zero;
+
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.enabled = false;
+        }
+        transform.position = new Vector3(0, 100, 0);
     }
 
     public bool IsInPlay()
