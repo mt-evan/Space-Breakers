@@ -426,6 +426,7 @@ GameObject:
   - component: {fileID: 230013417}
   - component: {fileID: 230013416}
   - component: {fileID: 230013418}
+  - component: {fileID: 230013419}
   m_Layer: 0
   m_Name: RightWall
   m_TagString: Untagged
@@ -453,7 +454,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 699b1c783df6ba04fb24b152becf2913, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -494,8 +495,8 @@ Transform:
   m_GameObject: {fileID: 230013415}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 18, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 25, z: 1}
+  m_LocalPosition: {x: 18, y: -0.5, z: 0}
+  m_LocalScale: {x: 1, y: 24, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -545,6 +546,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &230013419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 230013415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00622e8ee9a23d1498351ec0ba517367, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pulseSpeed: 1
+  minAlpha: 0.5
+  maxAlpha: 1
 --- !u!1 &267436305
 GameObject:
   m_ObjectHideFlags: 0
@@ -1059,6 +1075,7 @@ GameObject:
   - component: {fileID: 710738788}
   - component: {fileID: 710738787}
   - component: {fileID: 710738789}
+  - component: {fileID: 710738790}
   m_Layer: 0
   m_Name: LeftWall
   m_TagString: Untagged
@@ -1086,7 +1103,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 699b1c783df6ba04fb24b152becf2913, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1127,8 +1144,8 @@ Transform:
   m_GameObject: {fileID: 710738786}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -18, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 25, z: 1}
+  m_LocalPosition: {x: -18, y: -0.5, z: 0}
+  m_LocalScale: {x: 1, y: 24, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1178,6 +1195,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &710738790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710738786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00622e8ee9a23d1498351ec0ba517367, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pulseSpeed: 1
+  minAlpha: 0.5
+  maxAlpha: 1
 --- !u!1 &773036443
 GameObject:
   m_ObjectHideFlags: 0
@@ -1189,6 +1221,7 @@ GameObject:
   - component: {fileID: 773036445}
   - component: {fileID: 773036444}
   - component: {fileID: 773036446}
+  - component: {fileID: 773036447}
   m_Layer: 0
   m_Name: TopWall
   m_TagString: Untagged
@@ -1216,7 +1249,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 699b1c783df6ba04fb24b152becf2913, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1308,6 +1341,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &773036447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 773036443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00622e8ee9a23d1498351ec0ba517367, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pulseSpeed: 1
+  minAlpha: 0.5
+  maxAlpha: 1
 --- !u!1 &1078180461
 GameObject:
   m_ObjectHideFlags: 0
