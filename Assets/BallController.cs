@@ -4,7 +4,7 @@ public class BallController : MonoBehaviour
 {
     public float ballSpeed = 9f;
     public PlayerController playerController;
-    public float ballYOffset = 0.5f;
+    public float ballYOffset = 0.8f;
     public float lossBoundary = -20f;
 
     public LayerMask alienLayer;
