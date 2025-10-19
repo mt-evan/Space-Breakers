@@ -72,6 +72,8 @@ public class BallController : MonoBehaviour
         // Loop through the list and destroy each one.
         foreach (Collider2D alien in aliensToDestroy)
         {
+            SoundManager.instance.PlayAlienHit();
+
             if (GameManager.instance != null)
             {
                 GameManager.instance.AddScore(10);
@@ -84,7 +86,7 @@ public class BallController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            SoundManager.instance.PlayPlayerBounce();
+            if (inPlay) SoundManager.instance.PlayPlayerBounce();
 
             Vector2 playerPosition = collision.transform.position;
             Vector2 ballPosition = transform.position;
