@@ -1,13 +1,13 @@
 Musts:
 
-* Make alien Projectiles look nice
-* areana map, make it look good
 * make walls look good
 
 * sound effects for when ball hits alien
 * sound effects for when ball hits player
 * sound effects for level cleared or game over
 * when power ups are active, some graphic should indicate that. (Freeze, aliens are frozen. Immunity, the player has a shield. Pierce, the ball has a unique graphic)
+* when player respawns, they should be immune for a couple seconds
+* when 3 seconds left in player's shield, it turns to red to signal that 3 seconds are left
 
 
 Wants:
