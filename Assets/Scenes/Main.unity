@@ -400,6 +400,10 @@ MonoBehaviour:
   swarmPrefab: {fileID: 7806884773172712877, guid: c7b58a0158768124ca5cbf1b0c18c03e, type: 3}
   playerController: {fileID: 546907198}
   ballController: {fileID: 32011801}
+  forceFieldWalls:
+  - {fileID: 710738790}
+  - {fileID: 230013419}
+  - {fileID: 773036447}
 --- !u!4 &43125719
 Transform:
   m_ObjectHideFlags: 0

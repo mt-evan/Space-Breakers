@@ -1,13 +1,13 @@
 Musts:
 
-* make walls look good
+* when power ups are active, some graphic should indicate that. ( Immunity, the player has a shield)
+* when player respawns, they should be immune for a couple seconds (in a red shield for a couple seconds)
+* when 3 seconds left in player's shield, it turns to red to signal that 3 seconds are left
 
 * sound effects for when ball hits alien
 * sound effects for when ball hits player
 * sound effects for level cleared or game over
-* when power ups are active, some graphic should indicate that. (Freeze, aliens are frozen. Immunity, the player has a shield. Pierce, the ball has a unique graphic)
-* when player respawns, they should be immune for a couple seconds
-* when 3 seconds left in player's shield, it turns to red to signal that 3 seconds are left
+
 
 
 Wants:

@@ -19,6 +19,7 @@ public class ForceFieldEffect : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Material materialInstance;
     private Color baseColor;
+    private Color originalColor;
 
     void Start()
     {
@@ -26,6 +27,7 @@ public class ForceFieldEffect : MonoBehaviour
         // get an instance of the material so each wall can pulse independently
         materialInstance = spriteRenderer.material;
         baseColor = materialInstance.color;
+        originalColor = baseColor;
     }
 
     void Update()
@@ -36,5 +38,15 @@ public class ForceFieldEffect : MonoBehaviour
         Color newColor = baseColor;
         newColor.a = targetAlpha;
         materialInstance.color = newColor;
+    }
+
+    public void SetTemporaryColor(Color tempColor)
+    {
+        baseColor = tempColor;
+    }
+
+    public void RevertToOriginalColor()
+    {
+        baseColor = originalColor;
     }
 }

@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     public AlienSwarmController swarmPrefab;
     public PlayerController playerController;
     public BallController ballController;
+    public ForceFieldEffect[] forceFieldWalls;
 
     private AlienSwarmController currentSwarm;
     private int currentLevel = 0;
@@ -182,7 +183,19 @@ public class GameManager : MonoBehaviour
         {
             currentSwarm.StopSwarm(); // Stop movement and firing
         }
+
+        foreach (ForceFieldEffect wall in forceFieldWalls)
+        {
+            if (wall != null) wall.SetTemporaryColor(Color.cyan);
+        }
+
         yield return new WaitForSeconds(15f); // Duration of the power-up
+        
+        foreach (ForceFieldEffect wall in forceFieldWalls)
+        {
+            if (wall != null) wall.RevertToOriginalColor();
+        }
+        
         if (currentSwarm != null)
         {
             currentSwarm.ResumeSwarm(); // Resume movement and firing
