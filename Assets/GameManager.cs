@@ -79,10 +79,11 @@ public class GameManager : MonoBehaviour
 
     IEnumerator StartNextLevel()
     {
-        SoundManager.instance.PlayLevelClear();
-
         if (currentLevel > 0)
         {
+            SoundManager.instance.PlayLevelClear();
+            CleanUpScene();
+            DeactivateAllPowerUps();
             if (scoreText != null) scoreText.gameObject.SetActive(false);
             if (levelText != null) levelText.gameObject.SetActive(false);
             levelClearPanel.SetActive(true);
@@ -150,6 +151,50 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    void CleanUpScene()
+    {
+        // Find all active projectiles and destroy them
+        ProjectileController[] projectiles = FindObjectsOfType<ProjectileController>();
+        foreach (ProjectileController projectile in projectiles)
+        {
+            Destroy(projectile.gameObject);
+        }
+
+        // Find all active power-ups and destroy them
+        PowerUpController[] powerUps = FindObjectsOfType<PowerUpController>();
+        foreach (PowerUpController powerUp in powerUps)
+        {
+            Destroy(powerUp.gameObject);
+        }
+    }
+
+    void DeactivateAllPowerUps()
+    {
+        // Stop all power-up coroutines to prevent them from finishing
+        StopCoroutine("PiercePowerUpRoutine");
+        StopCoroutine("ShieldPowerUpRoutine");
+        StopCoroutine("FreezePowerUpRoutine");
+
+        // Reset the state for each power-up
+        if (pierceActive)
+        {
+            pierceActive = false;
+            if (ballController != null) ballController.SetAppearance(false);
+            Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Ball"), LayerMask.NameToLayer("Aliens"), false);
+        }
+
+        if (playerController != null && playerController.IsShieldActive())
+        {
+            playerController.DeactivateShield();
+        }
+
+        // Revert wall colors in case the level ends during a freeze
+        foreach (ForceFieldEffect wall in forceFieldWalls)
+        {
+            if (wall != null) wall.RevertToOriginalColor();
+        }
     }
 
     public void ActivatePowerUp(PowerUpController.PowerUpType type)

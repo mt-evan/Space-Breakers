@@ -58,6 +58,19 @@ public class PlayerController : MonoBehaviour
         shieldCoroutine = StartCoroutine(ShieldRoutine(duraction, normalColor, warningColor));
     }
 
+    public void DeactivateShield()
+    {
+        if (shieldCoroutine != null) {
+            StopCoroutine(shieldCoroutine);
+            shieldCoroutine = null;
+        } 
+        if (shieldInstance != null)
+        {
+            shieldInstance.SetActive(false);
+        }
+        isShielded = false;
+    }
+
     private IEnumerator ShieldRoutine(float duration, Color normalCOlor, Color warningColor)
     {
         isShielded = true;
