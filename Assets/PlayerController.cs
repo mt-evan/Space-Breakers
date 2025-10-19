@@ -111,6 +111,8 @@ public class PlayerController : MonoBehaviour
 
     void Die()
     {
+        SoundManager.instance.PlayPlayerDeath();
+
         if (GameManager.instance != null)
         {
             GameManager.instance.SubtractScore(100);

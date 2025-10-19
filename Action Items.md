@@ -1,9 +1,6 @@
 Musts:
 
-
-* sound effects for when ball hits alien
-* sound effects for when ball hits player
-* sound effects for level cleared or game over
+* sound effect for the ball bouncing off the wall
 
 
 
@@ -18,3 +15,6 @@ Wants:
 Bugs:
 * When a level clears but some power-ups exist, they are still there. Should wipe out any falling power-ups and disable all power-ups if a level is cleared
 * Some objects were not cleaned up when closing the scene. (Did you spawn new GameObjects from OnDestroy?) The following scene GameObjects were found: PowerUp_Pierce(Clone) PowerUp_Shield(Clone)
+
+* after player-bounce sound was added, it makes the sound repeatedly when it should not make it at all
+* when pierce power up is activated, aliens being destroyed do not do anything.

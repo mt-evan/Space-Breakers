@@ -84,6 +84,8 @@ public class BallController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            SoundManager.instance.PlayPlayerBounce();
+
             Vector2 playerPosition = collision.transform.position;
             Vector2 ballPosition = transform.position;
             float playerWidth = collision.collider.bounds.size.x;
@@ -93,6 +95,8 @@ public class BallController : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Alien"))
         {
+            SoundManager.instance.PlayAlienHit();
+
             if (GameManager.instance != null)
             {
                 GameManager.instance.AddScore(10);

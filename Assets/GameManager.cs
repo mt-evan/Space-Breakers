@@ -77,6 +77,8 @@ public class GameManager : MonoBehaviour
 
     IEnumerator StartNextLevel()
     {
+        SoundManager.instance.PlayLevelClear();
+
         if (currentLevel > 0)
         {
             if (scoreText != null) scoreText.gameObject.SetActive(false);
@@ -107,6 +109,8 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        SoundManager.instance.PlayGameOver();
+
         if (currentSwarm != null)
         {
             currentSwarm.StopSwarm();
@@ -137,6 +141,8 @@ public class GameManager : MonoBehaviour
 
     public void ActivatePowerUp(PowerUpController.PowerUpType type)
     {
+        SoundManager.instance.PlayPowerUp();
+
         // Stop any existing coroutine of the same type to reset its timer if collected again
         StopCoroutine(type.ToString() + "PowerUpRoutine");
         StartCoroutine(type.ToString() + "PowerUpRoutine");
