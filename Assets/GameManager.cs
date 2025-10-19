@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public Text finalScoreText;
     public Text highScoreText;
     public Text finalLevelText;
+    public Text highestLevelText;
     public GameObject levelClearPanel;
 
     [Header("Game Object References")]
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour
     private int currentLevel = 0;
     private int score = 0;
     private const string HighScoreKey = "HighScore";
+    private const string HighestLevelKey = "HighestLevel";
 
     private bool pierceActive = false;
     public bool IsPierceActive() { return pierceActive; }
@@ -127,9 +129,20 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt(HighScoreKey, highScore);
             PlayerPrefs.Save();
         }
+
+        // highest level logic
+        int highestLevel = PlayerPrefs.GetInt(HighestLevelKey, 1);
+        if (currentLevel > highestLevel)
+        {
+            highestLevel = currentLevel;
+            PlayerPrefs.SetInt(HighestLevelKey, highestLevel);
+            PlayerPrefs.Save();
+        }
+
         finalScoreText.text = "Your Score: " + score;
         highScoreText.text = "High Score: " + highScore;
         finalLevelText.text = "Level Reached: " + currentLevel;
+        highestLevelText.text = "Highest Level: " + highestLevel;
         gameOverPanel.SetActive(true);
     }
 

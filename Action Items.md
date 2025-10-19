@@ -1,6 +1,5 @@
 Musts:
 
-* sound effect for the ball bouncing off the wall
 * highest level reached counter
 
 
