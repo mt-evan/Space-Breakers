@@ -28,9 +28,7 @@ public class GameManager : MonoBehaviour
     private const string HighScoreKey = "HighScore";
 
     private bool pierceActive = false;
-    private bool shieldActive = false;
     public bool IsPierceActive() { return pierceActive; }
-    public bool IsShieldActive() { return shieldActive; }
 
     void Awake()
     {
@@ -144,6 +142,15 @@ public class GameManager : MonoBehaviour
         StartCoroutine(type.ToString() + "PowerUpRoutine");
     }
 
+    public bool IsShieldActive()
+    {
+        if (playerController != null)
+        {
+            return playerController.IsShieldActive();
+        }
+        return false;
+    }
+
     IEnumerator PiercePowerUpRoutine()
     {
         pierceActive = true;
@@ -172,9 +179,11 @@ public class GameManager : MonoBehaviour
 
     IEnumerator ShieldPowerUpRoutine()
     {
-        shieldActive = true;
-        yield return new WaitForSeconds(20f); // Duration of the power-up
-        shieldActive = false;
+        if (playerController != null)
+        {
+            playerController.ActivateShield(20f, Color.blue, Color.red);
+        }
+        yield return null;
     }
 
     IEnumerator FreezePowerUpRoutine()

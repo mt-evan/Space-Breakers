@@ -3,14 +3,21 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Movement")]
     public float moveSpeed = 10f;
     public float leftBoundary = -16.5f;
     public float rightBoundary = 16.5f;
     public BallController ballController;
+    public GameObject shieldPrefab;
 
     private Rigidbody2D rb;
     private float moveInput;
     private bool isAlive = true;
+
+    // shield state management
+    private bool isShielded = false;
+    private GameObject shieldInstance;
+    private Coroutine shieldCoroutine;
 
     void Start()
     {
@@ -36,35 +43,68 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public bool IsShieldActive()
+    {
+        return isShielded;
+    }
+
+    public void ActivateShield(float duraction, Color normalColor, Color warningColor)
+    {
+        // if a shield is already active, stop it so reset the timer
+        if (shieldCoroutine != null)
+        {
+            StopCoroutine(shieldCoroutine);
+        }
+        shieldCoroutine = StartCoroutine(ShieldRoutine(duraction, normalColor, warningColor));
+    }
+
+    private IEnumerator ShieldRoutine(float duration, Color normalCOlor, Color warningColor)
+    {
+        isShielded = true;
+
+        // Make a shield if it does not exist
+        if (shieldInstance == null)
+        {
+            shieldInstance = Instantiate(shieldPrefab, transform.position, Quaternion.identity, transform);
+        }
+        shieldInstance.SetActive(true);
+        SpriteRenderer shieldRenderer = shieldInstance.GetComponent<SpriteRenderer>();
+
+        shieldRenderer.color = normalCOlor;
+
+        if (duration > 3f)
+        {
+            yield return new WaitForSeconds(duration - 3f);
+            shieldRenderer.color = warningColor;
+        }
+
+        // Wait for the final 3 seconds
+        yield return new WaitForSeconds(Mathf.Min(duration, 3f));
+
+        // deactivate the shield
+        shieldInstance.SetActive(false);
+        isShielded = false;
+        shieldCoroutine = null;
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Check if we hit a projectile
         if (other.gameObject.layer == LayerMask.NameToLayer("Projectiles"))
         {
-            // Check with the GameManager if the shield is active
-            if (GameManager.instance != null && GameManager.instance.IsShieldActive())
+            // --- UPDATED: Check its own shield status ---
+            if (isShielded)
             {
-                // If shield is active, just destroy the projectile and do nothing else
                 Destroy(other.gameObject);
                 return;
             }
 
             Destroy(other.gameObject);
-            if (isAlive)
-            {
-                Die();
-            }
+            if (isAlive) { Die(); }
         }
-        // Check if we hit a power-up
         else if (other.gameObject.layer == LayerMask.NameToLayer("PowerUps"))
         {
             PowerUpController powerUp = other.GetComponent<PowerUpController>();
-            if (powerUp != null && GameManager.instance != null)
-            {
-                // Tell the GameManager which power-up was collected
-                GameManager.instance.ActivatePowerUp(powerUp.type);
-            }
-            // Destroy the power-up object after collecting it
+            if (powerUp != null && GameManager.instance != null) { GameManager.instance.ActivatePowerUp(powerUp.type); }
             Destroy(other.gameObject);
         }
     }
@@ -95,6 +135,8 @@ public class PlayerController : MonoBehaviour
 
         // Resets the player after death
         ResetPlayerPosition();
+
+        ActivateShield(3f, Color.red, Color.red);
 
         // After a respawn, tell the ball to reset itself only if it is not currently in play.
         if (ballController != null && !ballController.IsInPlay())
