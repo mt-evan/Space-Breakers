@@ -48,8 +48,24 @@ public class AlienSwarmController : MonoBehaviour
 
     void Update()
     {
-        // If the swarm is stopped by something like the Freeze power-up, do nothing
+        alienTransforms.RemoveAll(item => item == null);
+
+        // Always check if the wave has been cleared
+        if (alienTransforms.Count == 0)
+        {
+            if (!isStopped) // This check prevents the function from being called multiple times
+            {
+                isStopped = true;
+                GameManager.instance.WaveCleared();
+                gameObject.SetActive(false);
+            }
+            return;
+        }
+
+        // check if the swarm is frozen. If it is, stop here for this frame.
         if (isStopped) return;
+
+        // If the wave isn't clear and the swarm isn't frozen, then move the swarm
         MoveSwarm();
     }
 
@@ -84,18 +100,6 @@ public class AlienSwarmController : MonoBehaviour
 
     void MoveSwarm()
     {
-        alienTransforms.RemoveAll(item => item == null);
-        if (alienTransforms.Count == 0)
-        {
-            if (!isStopped)
-            {
-                isStopped = true;
-                GameManager.instance.WaveCleared();
-                gameObject.SetActive(false);
-            }
-            return;
-        }
-
         Vector3 direction = movingRight ? Vector3.right : Vector3.left;
         transform.position += direction * moveSpeed * Time.deltaTime;
         float currentLeftmost = float.MaxValue;
