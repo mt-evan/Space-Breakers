@@ -433,7 +433,7 @@ GameObject:
   - component: {fileID: 230013419}
   m_Layer: 0
   m_Name: RightWall
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1026,6 +1026,7 @@ MonoBehaviour:
   gameOverSound: {fileID: 8300000, guid: 4c3e88c2408f9ff40bdfb6538d5c42d4, type: 3}
   playerDeathSound: {fileID: 8300000, guid: 32fc3085cd6846e4cac1aa138c20433c, type: 3}
   powerUpSound: {fileID: 8300000, guid: 6a31ea1470d49584f8e5ddc28526fb17, type: 3}
+  wallBounceSound: {fileID: 8300000, guid: dbd21028308ea13448e7f5e4662a326f, type: 3}
 --- !u!82 &612184180
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1230,7 +1231,7 @@ GameObject:
   - component: {fileID: 710738790}
   m_Layer: 0
   m_Name: LeftWall
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1376,7 +1377,7 @@ GameObject:
   - component: {fileID: 773036447}
   m_Layer: 0
   m_Name: TopWall
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

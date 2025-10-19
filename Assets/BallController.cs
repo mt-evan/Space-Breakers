@@ -107,6 +107,10 @@ public class BallController : MonoBehaviour
             // If it's not active, this code will run and destroy the alien.
             Destroy(collision.gameObject);
         }
+        else if (collision.gameObject.CompareTag("Wall"))
+        {
+            SoundManager.instance.PlayWallBounce();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)

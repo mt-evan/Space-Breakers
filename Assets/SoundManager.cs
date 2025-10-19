@@ -13,6 +13,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip gameOverSound;
     public AudioClip playerDeathSound;
     public AudioClip powerUpSound;
+    public AudioClip wallBounceSound;
 
     private AudioSource audioSource;
 
@@ -59,5 +60,13 @@ public class SoundManager : MonoBehaviour
     public void PlayPowerUp()
     {
         if (powerUpSound != null) audioSource.PlayOneShot(powerUpSound);
+    }
+
+    public void PlayWallBounce()
+    {
+        if (wallBounceSound != null )
+        {
+            audioSource.PlayOneShot(wallBounceSound);
+        }
     }
 }
