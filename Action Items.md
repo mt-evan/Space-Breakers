@@ -1,7 +1,8 @@
 Musts:
 
-* Replace basic bar and squares with the actual ship and alien looks
+* Make alien Projectiles look nice
 * areana map, make it look good
+* make walls look good
 
 * sound effects for when ball hits alien
 * sound effects for when ball hits player
