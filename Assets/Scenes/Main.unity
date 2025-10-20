@@ -288,6 +288,7 @@ MonoBehaviour:
   playerController: {fileID: 546907198}
   ballYOffset: 1.2
   lossBoundary: -20
+  maxConsecutiveWallHits: 4
   alienLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -2234,8 +2235,8 @@ Transform:
   m_GameObject: {fileID: 1778427097}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -15.1091, y: -0.0348, z: 10}
-  m_LocalScale: {x: 12.281389, y: 10.14242, z: 1}
+  m_LocalPosition: {x: -15.469, y: -0.0348, z: 10}
+  m_LocalScale: {x: 11.994004, y: 10.14242, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

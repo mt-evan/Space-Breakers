@@ -6,6 +6,8 @@ public class BallController : MonoBehaviour
     public PlayerController playerController;
     public float ballYOffset = 0.8f;
     public float lossBoundary = -20f;
+    public int maxConsecutiveWallHits = 4;
+    private int wallHitCounter = 0;
 
     public LayerMask alienLayer;
     private float ballRadius;
@@ -86,6 +88,7 @@ public class BallController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            wallHitCounter = 0;
             if (inPlay) SoundManager.instance.PlayPlayerBounce();
 
             Vector2 playerPosition = collision.transform.position;
@@ -97,6 +100,7 @@ public class BallController : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Alien"))
         {
+            wallHitCounter = 0;
             SoundManager.instance.PlayAlienHit();
 
             if (GameManager.instance != null)
@@ -110,6 +114,13 @@ public class BallController : MonoBehaviour
         else if (collision.gameObject.CompareTag("Wall"))
         {
             SoundManager.instance.PlayWallBounce();
+
+            wallHitCounter++;
+            if (wallHitCounter >= maxConsecutiveWallHits)
+            {
+                GameManager.instance.SubtractScore(10);
+                ResetBallToPlayer();
+            }
         }
     }
 
@@ -125,12 +136,13 @@ public class BallController : MonoBehaviour
     {
         inPlay = false;
         rb.velocity = Vector2.zero;
+        wallHitCounter = 0;
 
         if (spriteRenderer != null)
         {
             spriteRenderer.enabled = false;
         }
-        transform.position = new Vector3(0, 100, 0);
+        transform.position = new Vector3(0, 100, 0); // move off screen so ball doesn't affect the arena
     }
 
     public bool IsInPlay()
