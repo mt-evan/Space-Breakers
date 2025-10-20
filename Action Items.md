@@ -1,7 +1,5 @@
 Musts:
 
-* what to do if the ball's trajectory is barely vertical and all horizontal (solution: if the ball hits a wall 4 times without hitting an alien or the player or respawning, then it will despawn and then respawn on the player after the respawn time for the ball)
-
 Wants:
 
 * animations when player ship is destroyed
