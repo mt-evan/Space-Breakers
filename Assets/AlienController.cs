@@ -61,10 +61,10 @@ public class AlienController : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    void OnDestroy()
     {
         // Check if the game is closing or else potential error could occur
-        if (GameManager.instance != null)
+        if (GameManager.instance != null && !GameManager.isQuitting)
         {
             // Check if we should drop a power-up
             if (Random.value < powerUpDropChance)

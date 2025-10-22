@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    public static bool isQuitting = false;
 
     [Header("UI References")]
     public Text scoreText;
@@ -34,6 +35,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        isQuitting = false;
         if (instance == null)
         {
             instance = this;
@@ -42,6 +44,12 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    // This gets called by Unity when the game is stopped
+    private void OnApplicationQuit()
+    {
+        isQuitting = true;
     }
 
     void Start()
