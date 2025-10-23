@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour
     public BallController ballController;
     public GameObject shieldPrefab;
 
+    [Header("Respawn Time")]
+    public float respawnTime = 5f;
+
     private Rigidbody2D rb;
     private float moveInput;
     private bool isAlive = true;
@@ -146,7 +149,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator RespawnPlayer()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(respawnTime);
 
         // Resets the player after death
         ResetPlayerPosition();

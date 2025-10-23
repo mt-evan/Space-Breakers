@@ -289,6 +289,7 @@ MonoBehaviour:
   ballYOffset: 1.2
   lossBoundary: -20
   maxConsecutiveWallHits: 4
+  ballRespawnDelay: 3
   alienLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -948,6 +949,7 @@ MonoBehaviour:
   rightBoundary: 16.5
   ballController: {fileID: 32011801}
   shieldPrefab: {fileID: 8029686107906607996, guid: 43d3531153c752d43a7dd3bcf4bae154, type: 3}
+  respawnTime: 5
 --- !u!61 &546907199
 BoxCollider2D:
   m_ObjectHideFlags: 0
